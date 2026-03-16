@@ -1,5 +1,5 @@
 -- UIComponents.lua
--- Reusable UI creation helpers for the modern MathStreak look
+-- Reusable UI creation helpers for the modern BrainBlitz look
 
 local UIComponents = {}
 

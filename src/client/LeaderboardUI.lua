@@ -4,9 +4,9 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local MathStreak = ReplicatedStorage:WaitForChild("MathStreak")
-local Config = require(MathStreak:WaitForChild("Config"))
-local Remotes = require(MathStreak:WaitForChild("Remotes"))
+local BrainBlitz = ReplicatedStorage:WaitForChild("BrainBlitz")
+local Config = require(BrainBlitz:WaitForChild("Config"))
+local Remotes = require(BrainBlitz:WaitForChild("Remotes"))
 local UIComponents = require(script.Parent:WaitForChild("UIComponents"))
 
 local LeaderboardUI = {}

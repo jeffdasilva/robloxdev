@@ -76,7 +76,7 @@ print("")
 print(
 	"╔═══════════════════════════════════════╗"
 )
-print("║       MATH STREAK — TEST SUITE        ║")
+print("║       BRAIN BLITZ — TEST SUITE        ║")
 print(
 	"╚═══════════════════════════════════════╝"
 )

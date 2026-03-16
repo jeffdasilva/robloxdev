@@ -3,7 +3,7 @@
 -- Each player stores: currentStreak, bestStreak, lastCompletedDate, attemptsToday, todayQuestionId
 
 local DataStoreService = game:GetService("DataStoreService")
-local Config = require(game:GetService("ReplicatedStorage"):WaitForChild("MathStreak"):WaitForChild("Config"))
+local Config = require(game:GetService("ReplicatedStorage"):WaitForChild("BrainBlitz"):WaitForChild("Config"))
 
 local PlayerDataStore = {}
 PlayerDataStore.__index = PlayerDataStore
@@ -20,7 +20,7 @@ local function getDataStore()
 		if ok then
 			dataStore = store
 		else
-			warn("[MathStreak] Could not access DataStore: " .. tostring(store))
+			warn("[BrainBlitz] Could not access DataStore: " .. tostring(store))
 		end
 	end
 	return dataStore
@@ -34,7 +34,7 @@ local function getOrderedStore()
 		if ok then
 			orderedStore = store
 		else
-			warn("[MathStreak] Could not access OrderedDataStore: " .. tostring(store))
+			warn("[BrainBlitz] Could not access OrderedDataStore: " .. tostring(store))
 		end
 	end
 	return orderedStore
@@ -52,7 +52,7 @@ local DEFAULT_DATA = {
 function PlayerDataStore.load(player)
 	local store = getDataStore()
 	if not store then
-		warn("[MathStreak] DataStore unavailable, returning defaults for " .. player.Name)
+		warn("[BrainBlitz] DataStore unavailable, returning defaults for " .. player.Name)
 		return {
 			currentStreak = 0,
 			bestStreak = 0,
@@ -90,7 +90,7 @@ end
 function PlayerDataStore.save(player, data)
 	local store = getDataStore()
 	if not store then
-		warn("[MathStreak] DataStore unavailable, cannot save for " .. player.Name)
+		warn("[BrainBlitz] DataStore unavailable, cannot save for " .. player.Name)
 		return false
 	end
 	local key = "player_" .. player.UserId
@@ -98,7 +98,7 @@ function PlayerDataStore.save(player, data)
 		store:SetAsync(key, data)
 	end)
 	if not success then
-		warn("[MathStreak] Failed to save data for " .. player.Name .. ": " .. tostring(err))
+		warn("[BrainBlitz] Failed to save data for " .. player.Name .. ": " .. tostring(err))
 	end
 	return success
 end
@@ -106,14 +106,14 @@ end
 function PlayerDataStore.updateLeaderboard(player, streak)
 	local store = getOrderedStore()
 	if not store then
-		warn("[MathStreak] OrderedDataStore unavailable, cannot update leaderboard")
+		warn("[BrainBlitz] OrderedDataStore unavailable, cannot update leaderboard")
 		return
 	end
 	local success, err = pcall(function()
 		store:SetAsync("player_" .. player.UserId, streak)
 	end)
 	if not success then
-		warn("[MathStreak] Failed to update leaderboard: " .. tostring(err))
+		warn("[BrainBlitz] Failed to update leaderboard: " .. tostring(err))
 	end
 end
 
@@ -121,7 +121,7 @@ function PlayerDataStore.getLeaderboard(count)
 	count = count or Config.LEADERBOARD_SIZE
 	local store = getOrderedStore()
 	if not store then
-		warn("[MathStreak] OrderedDataStore unavailable, returning empty leaderboard")
+		warn("[BrainBlitz] OrderedDataStore unavailable, returning empty leaderboard")
 		return {}
 	end
 	local success, pages = pcall(function()

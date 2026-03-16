@@ -53,8 +53,8 @@ format-check: ## Check formatting without modifying files
 
 build: stamp-version ## Build a .rbxlx place file from source
 	@echo "🔨 Building Roblox place file..."
-	@$(ROJO) build -o MathStreak.rbxlx
-	@echo "Built MathStreak.rbxlx  ($(VERSION) @ $(BUILD_TIME))"
+	@$(ROJO) build -o BrainBlitz.rbxlx
+	@echo "Built BrainBlitz.rbxlx  ($(VERSION) @ $(BUILD_TIME))"
 
 serve: stamp-version ## Start Rojo live-sync server (connect from Roblox Studio)
 	@echo "🚀 Starting Rojo server ($(VERSION) @ $(BUILD_TIME))..."
@@ -68,9 +68,9 @@ stamp-version: ## Stamp version and build time into Config.lua
 
 update: check build ## Run all checks, then build the Roblox place file
 	@echo ""
-	@echo "✅ All checks passed and MathStreak.rbxlx is up to date."
+	@echo "✅ All checks passed and BrainBlitz.rbxlx is up to date."
 	@echo "   To publish:"
-	@echo "   1. Open MathStreak.rbxlx in Roblox Studio"
+	@echo "   1. Open BrainBlitz.rbxlx in Roblox Studio"
 	@echo "   2. File → Publish to Roblox"
 	@echo ""
 	@echo "   Or use 'make serve' for live-sync development."
@@ -97,5 +97,5 @@ setup: ## Install all required tools via aftman
 
 clean: ## Remove build artifacts
 	@echo "🧹 Cleaning..."
-	@rm -f MathStreak.rbxlx MathStreak.rbxl
+	@rm -f BrainBlitz.rbxlx BrainBlitz.rbxl
 	@echo "Done!"

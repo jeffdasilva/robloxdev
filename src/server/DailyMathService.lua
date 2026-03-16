@@ -4,10 +4,10 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local MathStreak = ReplicatedStorage:WaitForChild("MathStreak")
-local MathGenerator = require(MathStreak:WaitForChild("MathGenerator"))
-local Config = require(MathStreak:WaitForChild("Config"))
-local Remotes = require(MathStreak:WaitForChild("Remotes"))
+local BrainBlitz = ReplicatedStorage:WaitForChild("BrainBlitz")
+local MathGenerator = require(BrainBlitz:WaitForChild("MathGenerator"))
+local Config = require(BrainBlitz:WaitForChild("Config"))
+local Remotes = require(BrainBlitz:WaitForChild("Remotes"))
 local PlayerDataStore = require(script.Parent:WaitForChild("PlayerDataStore"))
 
 local DailyMathService = {}
@@ -68,7 +68,7 @@ end
 ------------------------------------------------------------------------
 
 local function onPlayerAdded(player)
-	print("[MathStreak] Loading data for " .. player.Name .. " (" .. player.UserId .. ")")
+	print("[BrainBlitz] Loading data for " .. player.Name .. " (" .. player.UserId .. ")")
 
 	-- Set default data immediately so remotes can respond while DataStore loads
 	playerCache[player.UserId] = {
@@ -85,7 +85,7 @@ local function onPlayerAdded(player)
 	data = ensureTodayReset(data)
 	playerCache[player.UserId] = data
 
-	print("[MathStreak] Data ready for " .. player.Name)
+	print("[BrainBlitz] Data ready for " .. player.Name)
 
 	PlayerDataStore.save(player, data)
 end
@@ -255,11 +255,11 @@ end
 ------------------------------------------------------------------------
 
 function DailyMathService.init()
-	print("[MathStreak] Server v" .. Config.VERSION .. " (" .. Config.BUILD_TIME .. ") initializing...")
+	print("[BrainBlitz] Server v" .. Config.VERSION .. " (" .. Config.BUILD_TIME .. ") initializing...")
 
 	-- Set up remotes
 	Remotes.setup()
-	print("[MathStreak] Remotes created")
+	print("[BrainBlitz] Remotes created")
 
 	-- Bind remote handlers
 	local getDailyQuestion = Remotes.get("GetDailyQuestion")
@@ -296,7 +296,7 @@ function DailyMathService.init()
 		end
 	end)
 
-	print("[MathStreak] Server initialized successfully!")
+	print("[BrainBlitz] Server initialized successfully!")
 end
 
 return DailyMathService

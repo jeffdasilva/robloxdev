@@ -1,4 +1,4 @@
-# ⚡ Math Streak
+# ⚡ BrainBlitz
 
 A daily math challenge game for Roblox. Every day, players get a new 8th-grade-level math question to solve. They have **5 attempts** per day, and the game tracks their **longest streak** of consecutive correct days on a global **leaderboard**.
 
@@ -31,23 +31,23 @@ robloxdev/
 ├── .gitignore
 │
 ├── src/
-│   ├── shared/                   # → ReplicatedStorage/MathStreak
+│   ├── shared/                   # → ReplicatedStorage/BrainBlitz
 │   │   ├── Config.lua            # Game-wide constants (colors, fonts, remotes, limits)
 │   │   ├── MathGenerator.lua     # Pure math question generation (no Roblox APIs)
 │   │   └── Remotes.lua           # RemoteEvent/Function setup and access
 │   │
-│   ├── server/                   # → ServerScriptService/MathStreak
+│   ├── server/                   # → ServerScriptService/BrainBlitz
 │   │   ├── init.server.lua       # Server entry point
 │   │   ├── DailyMathService.lua  # Core game logic (attempts, streaks, remote handlers)
 │   │   └── PlayerDataStore.lua   # DataStore wrapper for player persistence
 │   │
-│   ├── client/                   # → StarterPlayer/StarterPlayerScripts/MathStreak
+│   ├── client/                   # → StarterPlayer/StarterPlayerScripts/BrainBlitz
 │   │   ├── init.client.lua       # Client entry point
 │   │   ├── QuestionUI.lua        # Main question panel UI (input, submit, feedback)
 │   │   ├── LeaderboardUI.lua     # Leaderboard panel UI (toggle, scrolling list)
 │   │   └── UIComponents.lua      # Reusable UI helpers (corners, strokes, panels, buttons)
 │   │
-│   └── gui/                      # → StarterGui/MathStreakGui
+│   └── gui/                      # → StarterGui/BrainBlitzGui
 │       └── init.meta.json        # ScreenGui properties
 │
 └── tests/
@@ -77,7 +77,7 @@ robloxdev/
 #### Client Layer (`src/client/`)
 
 - **`QuestionUI.lua`** — Builds the full-screen dark UI with:
-  - A title banner ("⚡ MATH STREAK ⚡")
+  - A title banner ("⚡ BRAIN BLITZ ⚡")
   - A streak counter (top right, with fire emoji)
   - A question card with category badge, question text, answer input, submit button, feedback text, attempt dots, and a hint toggle
   - Animations: cards slide in, correct answers pulse, wrong answers shake the input
@@ -144,7 +144,7 @@ make build
 | `make lint` | Run Selene linter on `src/` |
 | `make format` | Auto-format all Lua files with StyLua |
 | `make format-check` | Check formatting without modifying files |
-| `make build` | Build `MathStreak.rbxlx` with Rojo |
+| `make build` | Build `BrainBlitz.rbxlx` with Rojo |
 | `make serve` | Start Rojo live-sync server |
 | `make update` | Run all checks + build the place file |
 | `make setup` | Install/verify all required tools |
@@ -202,7 +202,7 @@ This runs the linter (Selene), checks formatting (StyLua), and runs all unit tes
 make build
 ```
 
-This creates `MathStreak.rbxlx`. Open it in Roblox Studio and use **File → Publish to Roblox**.
+This creates `BrainBlitz.rbxlx`. Open it in Roblox Studio and use **File → Publish to Roblox**.
 
 ### Option B: Live-sync + Publish from Studio
 

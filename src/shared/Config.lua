@@ -1,19 +1,19 @@
 -- Config.lua
--- Game-wide configuration constants for MathStreak
+-- Game-wide configuration constants for BrainBlitz
 
 local Config = {}
 
 -- Version identifier (updated by Makefile at build time)
-Config.VERSION = "dd2f8a1-dirty"
-Config.BUILD_TIME = "2026-03-16 03:51 UTC"
+Config.VERSION = "4eb641b-dirty"
+Config.BUILD_TIME = "2026-03-16 04:19 UTC"
 
 -- How many attempts the player gets per daily question
 Config.MAX_ATTEMPTS = 5
 
 -- DataStore keys
-Config.DATA_STORE_NAME = "MathStreakPlayerData_v1"
+Config.DATA_STORE_NAME = "BrainBlitzPlayerData_v1"
 Config.LEADERBOARD_KEY = "GlobalLeaderboard_v1"
-Config.ORDERED_STORE_NAME = "MathStreakLeaderboard_v1"
+Config.ORDERED_STORE_NAME = "BrainBlitzLeaderboard_v1"
 
 -- Leaderboard settings
 Config.LEADERBOARD_SIZE = 50
@@ -46,11 +46,11 @@ Config.Fonts = {
 
 -- Remote event/function names
 Config.Remotes = {
-	GetDailyQuestion = "MathStreak_GetDailyQuestion",
-	SubmitAnswer = "MathStreak_SubmitAnswer",
-	GetPlayerData = "MathStreak_GetPlayerData",
-	GetLeaderboard = "MathStreak_GetLeaderboard",
-	PlayerDataUpdated = "MathStreak_PlayerDataUpdated",
+	GetDailyQuestion = "BrainBlitz_GetDailyQuestion",
+	SubmitAnswer = "BrainBlitz_SubmitAnswer",
+	GetPlayerData = "BrainBlitz_GetPlayerData",
+	GetLeaderboard = "BrainBlitz_GetLeaderboard",
+	PlayerDataUpdated = "BrainBlitz_PlayerDataUpdated",
 }
 
 return Config

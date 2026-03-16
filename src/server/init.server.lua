@@ -1,7 +1,7 @@
 -- init.server.lua
--- Server entry point: initializes all MathStreak services
+-- Server entry point: initializes all BrainBlitz services
 
-print("[MathStreak] Server script starting...")
+print("[BrainBlitz] Server script starting...")
 
 local ok, err = pcall(function()
 	local DailyMathService = require(script:WaitForChild("DailyMathService"))
@@ -9,5 +9,5 @@ local ok, err = pcall(function()
 end)
 
 if not ok then
-	warn("[MathStreak] SERVER FAILED TO START: " .. tostring(err))
+	warn("[BrainBlitz] SERVER FAILED TO START: " .. tostring(err))
 end

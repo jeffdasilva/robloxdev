@@ -10,7 +10,7 @@ local Remotes = {}
 
 function Remotes.setup()
 	local folder = Instance.new("Folder")
-	folder.Name = "MathStreakRemotes"
+	folder.Name = "BrainBlitzRemotes"
 	folder.Parent = ReplicatedStorage
 
 	for name, remoteName in pairs(Config.Remotes) do
@@ -29,17 +29,17 @@ end
 function Remotes.get(name)
 	local remoteName = Config.Remotes[name]
 	if not remoteName then
-		warn("[MathStreak] Unknown remote: " .. tostring(name))
+		warn("[BrainBlitz] Unknown remote: " .. tostring(name))
 		return nil
 	end
-	local folder = ReplicatedStorage:WaitForChild("MathStreakRemotes", 30)
+	local folder = ReplicatedStorage:WaitForChild("BrainBlitzRemotes", 30)
 	if not folder then
-		warn("[MathStreak] MathStreakRemotes folder not found — server may not have started yet")
+		warn("[BrainBlitz] BrainBlitzRemotes folder not found — server may not have started yet")
 		return nil
 	end
 	local remote = folder:WaitForChild(remoteName, 30)
 	if not remote then
-		warn("[MathStreak] Remote not found: " .. remoteName)
+		warn("[BrainBlitz] Remote not found: " .. remoteName)
 	end
 	return remote
 end

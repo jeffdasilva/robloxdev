@@ -2,6 +2,7 @@
 *.rbxlx
 *.rbxl
 *.rbxm
+*.rbxlx.lock
 
 # Selene generated std
 roblox.yml

@@ -5,9 +5,9 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local MathStreak = ReplicatedStorage:WaitForChild("MathStreak")
-local Config = require(MathStreak:WaitForChild("Config"))
-local Remotes = require(MathStreak:WaitForChild("Remotes"))
+local BrainBlitz = ReplicatedStorage:WaitForChild("BrainBlitz")
+local Config = require(BrainBlitz:WaitForChild("Config"))
+local Remotes = require(BrainBlitz:WaitForChild("Remotes"))
 local UIComponents = require(script.Parent:WaitForChild("UIComponents"))
 
 local QuestionUI = {}
@@ -83,7 +83,7 @@ end
 local function buildUI()
 	-- ScreenGui
 	screenGui = Instance.new("ScreenGui")
-	screenGui.Name = "MathStreakUI"
+	screenGui.Name = "BrainBlitzUI"
 	screenGui.ResetOnSpawn = false
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	screenGui.Parent = playerGui
@@ -102,7 +102,7 @@ local function buildUI()
 	title.Size = UDim2.new(1, 0, 0, 60)
 	title.Position = UDim2.new(0, 0, 0, 20)
 	title.BackgroundTransparency = 1
-	title.Text = "⚡ MATH STREAK ⚡"
+	title.Text = "⚡ BRAIN BLITZ ⚡"
 	title.TextColor3 = Config.Colors.AccentGlow
 	title.Font = Config.Fonts.Title
 	title.TextSize = 42
@@ -315,10 +315,10 @@ local function setLockedState()
 end
 
 local function loadQuestion()
-	print("[MathStreak] Client: loading daily question...")
+	print("[BrainBlitz] Client: loading daily question...")
 	local getDailyQuestion = Remotes.get("GetDailyQuestion")
 	if not getDailyQuestion then
-		warn("[MathStreak] Client: GetDailyQuestion remote not found")
+		warn("[BrainBlitz] Client: GetDailyQuestion remote not found")
 		questionLabel.Text = "Could not connect to server.\nPlease rejoin!"
 		questionLabel.TextColor3 = Config.Colors.Error
 		return
@@ -328,7 +328,7 @@ local function loadQuestion()
 
 	-- Retry up to 5 times in case the server hasn't loaded our data yet
 	for i = 1, 5 do
-		print("[MathStreak] Client: requesting question (attempt " .. i .. "/5)")
+		print("[BrainBlitz] Client: requesting question (attempt " .. i .. "/5)")
 		local ok, response = pcall(function()
 			return getDailyQuestion:InvokeServer()
 		end)
@@ -336,7 +336,7 @@ local function loadQuestion()
 			result = response
 			break
 		elseif not ok then
-			warn("[MathStreak] Client: InvokeServer error: " .. tostring(response))
+			warn("[BrainBlitz] Client: InvokeServer error: " .. tostring(response))
 		end
 		task.wait(2)
 	end
@@ -360,9 +360,9 @@ local function loadQuestion()
 		end
 
 		tweenIn(mainFrame, 0.5)
-		print("[MathStreak] Client: question loaded successfully")
+		print("[BrainBlitz] Client: question loaded successfully")
 	else
-		warn("[MathStreak] Client: failed to load question after all retries")
+		warn("[BrainBlitz] Client: failed to load question after all retries")
 		questionLabel.Text = "Could not load today's question.\nPlease rejoin!"
 		questionLabel.TextColor3 = Config.Colors.Error
 	end
@@ -436,7 +436,7 @@ end
 ------------------------------------------------------------------------
 
 function QuestionUI.init()
-	print("[MathStreak] Client v" .. Config.VERSION .. " (" .. Config.BUILD_TIME .. ") initializing...")
+	print("[BrainBlitz] Client v" .. Config.VERSION .. " (" .. Config.BUILD_TIME .. ") initializing...")
 	buildUI()
 
 	submitButton.MouseButton1Click:Connect(submitAnswer)
@@ -467,13 +467,13 @@ function QuestionUI.init()
 			updateStreak(playerData)
 		end)
 	else
-		warn("[MathStreak] Client: PlayerDataUpdated remote not found")
+		warn("[BrainBlitz] Client: PlayerDataUpdated remote not found")
 	end
 
 	-- Load the question in a protected call so errors don't silently kill the UI
 	local ok, err = pcall(loadQuestion)
 	if not ok then
-		warn("[MathStreak] Client: loadQuestion error: " .. tostring(err))
+		warn("[BrainBlitz] Client: loadQuestion error: " .. tostring(err))
 		questionLabel.Text = "Error loading question.\nCheck Output for details."
 		questionLabel.TextColor3 = Config.Colors.Error
 	end

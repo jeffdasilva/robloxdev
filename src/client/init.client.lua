@@ -1,7 +1,7 @@
 -- init.client.lua
--- Client entry point: initializes the MathStreak UI
+-- Client entry point: initializes the BrainBlitz UI
 
-print("[MathStreak] Client script starting...")
+print("[BrainBlitz] Client script starting...")
 
 local ok, err = pcall(function()
 	local QuestionUI = require(script:WaitForChild("QuestionUI"))
@@ -12,14 +12,14 @@ local ok, err = pcall(function()
 end)
 
 if not ok then
-	warn("[MathStreak] CLIENT FAILED TO START: " .. tostring(err))
+	warn("[BrainBlitz] CLIENT FAILED TO START: " .. tostring(err))
 
 	-- Show error on screen so the user can see what happened
 	local Players = game:GetService("Players")
 	local playerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
 
 	local errorGui = Instance.new("ScreenGui")
-	errorGui.Name = "MathStreakError"
+	errorGui.Name = "BrainBlitzError"
 	errorGui.ResetOnSpawn = false
 	errorGui.Parent = playerGui
 
@@ -38,6 +38,6 @@ if not ok then
 	label.Font = Enum.Font.GothamBold
 	label.TextSize = 18
 	label.TextWrapped = true
-	label.Text = "MathStreak Error:\n\n" .. tostring(err) .. "\n\nCheck Output window (View > Output) for details."
+	label.Text = "BrainBlitz Error:\n\n" .. tostring(err) .. "\n\nCheck Output window (View > Output) for details."
 	label.Parent = bg
 end

@@ -1,16 +1,16 @@
 {
-	"name": "MathStreak",
+	"name": "BrainBlitz",
 	"tree": {
 		"$className": "DataModel",
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
-			"MathStreak": {
+			"BrainBlitz": {
 				"$path": "src/server"
 			}
 		},
 		"ReplicatedStorage": {
 			"$className": "ReplicatedStorage",
-			"MathStreak": {
+			"BrainBlitz": {
 				"$path": "src/shared"
 			}
 		},
@@ -18,14 +18,14 @@
 			"$className": "StarterPlayer",
 			"StarterPlayerScripts": {
 				"$className": "StarterPlayerScripts",
-				"MathStreak": {
+				"BrainBlitz": {
 					"$path": "src/client"
 				}
 			}
 		},
 		"StarterGui": {
 			"$className": "StarterGui",
-			"MathStreakGui": {
+			"BrainBlitzGui": {
 				"$path": "src/gui"
 			}
 		}
