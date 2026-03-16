@@ -86,6 +86,7 @@ local function buildUI()
 	screenGui.Name = "BrainBlitzUI"
 	screenGui.ResetOnSpawn = false
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	screenGui.DisplayOrder = 10
 	screenGui.Parent = playerGui
 
 	-- Full-screen background overlay

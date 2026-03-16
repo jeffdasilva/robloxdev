@@ -25,7 +25,7 @@ local function buildToggleButton(parent)
 	local btn = UIComponents.makeButton(parent, {
 		Name = "LeaderboardToggle",
 		Size = UDim2.new(0, 160, 0, 44),
-		Position = UDim2.new(0, 20, 0, 20),
+		Position = UDim2.new(0, 20, 1, -64),
 		Color = Config.Colors.Accent,
 		Text = "🏆 Leaderboard",
 		TextSize = 15,
@@ -38,7 +38,7 @@ local function buildLeaderboard(parent)
 	leaderboardFrame = UIComponents.makePanel(parent, {
 		Name = "LeaderboardPanel",
 		Size = UDim2.new(0, 300, 0, 460),
-		Position = UDim2.new(0, 20, 0, 80),
+		Position = UDim2.new(0, 20, 1, -540),
 		Color = Config.Colors.Panel,
 		Stroke = true,
 		StrokeColor = Config.Colors.Gold,
@@ -151,7 +151,19 @@ local function refreshLeaderboard()
 	end
 
 	local getLeaderboard = Remotes.get("GetLeaderboard")
-	local entries = getLeaderboard:InvokeServer()
+	if not getLeaderboard then
+		warn("[BrainBlitz] GetLeaderboard remote not found")
+		return
+	end
+
+	local ok, entries = pcall(function()
+		return getLeaderboard:InvokeServer()
+	end)
+
+	if not ok then
+		warn("[BrainBlitz] Leaderboard fetch error: " .. tostring(entries))
+		entries = nil
+	end
 
 	if entries and #entries > 0 then
 		for _, entry in ipairs(entries) do

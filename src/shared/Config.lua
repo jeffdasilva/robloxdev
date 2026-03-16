@@ -4,8 +4,8 @@
 local Config = {}
 
 -- Version identifier (updated by Makefile at build time)
-Config.VERSION = "4eb641b-dirty"
-Config.BUILD_TIME = "2026-03-16 04:19 UTC"
+Config.VERSION = "6984e99-dirty"
+Config.BUILD_TIME = "2026-03-16 04:36 UTC"
 
 -- How many attempts the player gets per daily question
 Config.MAX_ATTEMPTS = 5
