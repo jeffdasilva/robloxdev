@@ -120,6 +120,19 @@ local function buildUI()
 	subtitle.TextSize = 16
 	subtitle.Parent = bg
 
+	-- Version label (bottom right)
+	local versionLabel = Instance.new("TextLabel")
+	versionLabel.Name = "Version"
+	versionLabel.Size = UDim2.new(0, 250, 0, 20)
+	versionLabel.Position = UDim2.new(1, -260, 1, -25)
+	versionLabel.BackgroundTransparency = 1
+	versionLabel.Text = "v" .. Config.VERSION .. " | " .. Config.BUILD_TIME
+	versionLabel.TextColor3 = Color3.fromRGB(80, 80, 100)
+	versionLabel.Font = Config.Fonts.BodyLight
+	versionLabel.TextSize = 11
+	versionLabel.TextXAlignment = Enum.TextXAlignment.Right
+	versionLabel.Parent = bg
+
 	-- Streak display (top right)
 	local streakFrame = UIComponents.makePanel(bg, {
 		Name = "StreakFrame",
@@ -302,8 +315,31 @@ local function setLockedState()
 end
 
 local function loadQuestion()
+	print("[MathStreak] Client: loading daily question...")
 	local getDailyQuestion = Remotes.get("GetDailyQuestion")
-	local result = getDailyQuestion:InvokeServer()
+	if not getDailyQuestion then
+		warn("[MathStreak] Client: GetDailyQuestion remote not found")
+		questionLabel.Text = "Could not connect to server.\nPlease rejoin!"
+		questionLabel.TextColor3 = Config.Colors.Error
+		return
+	end
+
+	local result = nil
+
+	-- Retry up to 5 times in case the server hasn't loaded our data yet
+	for i = 1, 5 do
+		print("[MathStreak] Client: requesting question (attempt " .. i .. "/5)")
+		local ok, response = pcall(function()
+			return getDailyQuestion:InvokeServer()
+		end)
+		if ok and response then
+			result = response
+			break
+		elseif not ok then
+			warn("[MathStreak] Client: InvokeServer error: " .. tostring(response))
+		end
+		task.wait(2)
+	end
 
 	if result then
 		questionLabel.Text = result.question
@@ -324,6 +360,11 @@ local function loadQuestion()
 		end
 
 		tweenIn(mainFrame, 0.5)
+		print("[MathStreak] Client: question loaded successfully")
+	else
+		warn("[MathStreak] Client: failed to load question after all retries")
+		questionLabel.Text = "Could not load today's question.\nPlease rejoin!"
+		questionLabel.TextColor3 = Config.Colors.Error
 	end
 end
 
@@ -395,6 +436,7 @@ end
 ------------------------------------------------------------------------
 
 function QuestionUI.init()
+	print("[MathStreak] Client v" .. Config.VERSION .. " (" .. Config.BUILD_TIME .. ") initializing...")
 	buildUI()
 
 	submitButton.MouseButton1Click:Connect(submitAnswer)
@@ -424,9 +466,17 @@ function QuestionUI.init()
 			updateAttempts(playerData)
 			updateStreak(playerData)
 		end)
+	else
+		warn("[MathStreak] Client: PlayerDataUpdated remote not found")
 	end
 
-	loadQuestion()
+	-- Load the question in a protected call so errors don't silently kill the UI
+	local ok, err = pcall(loadQuestion)
+	if not ok then
+		warn("[MathStreak] Client: loadQuestion error: " .. tostring(err))
+		questionLabel.Text = "Error loading question.\nCheck Output for details."
+		questionLabel.TextColor3 = Config.Colors.Error
+	end
 end
 
 function QuestionUI.getScreenGui()

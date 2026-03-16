@@ -8,8 +8,37 @@ local Config = require(game:GetService("ReplicatedStorage"):WaitForChild("MathSt
 local PlayerDataStore = {}
 PlayerDataStore.__index = PlayerDataStore
 
-local dataStore = DataStoreService:GetDataStore(Config.DATA_STORE_NAME)
-local orderedStore = DataStoreService:GetOrderedDataStore(Config.ORDERED_STORE_NAME)
+-- Lazy-initialized DataStore handles (avoid crashing at module load)
+local dataStore = nil
+local orderedStore = nil
+
+local function getDataStore()
+	if not dataStore then
+		local ok, store = pcall(function()
+			return DataStoreService:GetDataStore(Config.DATA_STORE_NAME)
+		end)
+		if ok then
+			dataStore = store
+		else
+			warn("[MathStreak] Could not access DataStore: " .. tostring(store))
+		end
+	end
+	return dataStore
+end
+
+local function getOrderedStore()
+	if not orderedStore then
+		local ok, store = pcall(function()
+			return DataStoreService:GetOrderedDataStore(Config.ORDERED_STORE_NAME)
+		end)
+		if ok then
+			orderedStore = store
+		else
+			warn("[MathStreak] Could not access OrderedDataStore: " .. tostring(store))
+		end
+	end
+	return orderedStore
+end
 
 local DEFAULT_DATA = {
 	currentStreak = 0,
@@ -21,9 +50,21 @@ local DEFAULT_DATA = {
 }
 
 function PlayerDataStore.load(player)
+	local store = getDataStore()
+	if not store then
+		warn("[MathStreak] DataStore unavailable, returning defaults for " .. player.Name)
+		return {
+			currentStreak = 0,
+			bestStreak = 0,
+			lastCompletedDate = "",
+			attemptsUsed = 0,
+			todayQuestionId = "",
+			todaySolved = false,
+		}
+	end
 	local key = "player_" .. player.UserId
 	local success, data = pcall(function()
-		return dataStore:GetAsync(key)
+		return store:GetAsync(key)
 	end)
 
 	if success and data then
@@ -47,9 +88,14 @@ function PlayerDataStore.load(player)
 end
 
 function PlayerDataStore.save(player, data)
+	local store = getDataStore()
+	if not store then
+		warn("[MathStreak] DataStore unavailable, cannot save for " .. player.Name)
+		return false
+	end
 	local key = "player_" .. player.UserId
 	local success, err = pcall(function()
-		dataStore:SetAsync(key, data)
+		store:SetAsync(key, data)
 	end)
 	if not success then
 		warn("[MathStreak] Failed to save data for " .. player.Name .. ": " .. tostring(err))
@@ -58,8 +104,13 @@ function PlayerDataStore.save(player, data)
 end
 
 function PlayerDataStore.updateLeaderboard(player, streak)
+	local store = getOrderedStore()
+	if not store then
+		warn("[MathStreak] OrderedDataStore unavailable, cannot update leaderboard")
+		return
+	end
 	local success, err = pcall(function()
-		orderedStore:SetAsync("player_" .. player.UserId, streak)
+		store:SetAsync("player_" .. player.UserId, streak)
 	end)
 	if not success then
 		warn("[MathStreak] Failed to update leaderboard: " .. tostring(err))
@@ -68,8 +119,13 @@ end
 
 function PlayerDataStore.getLeaderboard(count)
 	count = count or Config.LEADERBOARD_SIZE
+	local store = getOrderedStore()
+	if not store then
+		warn("[MathStreak] OrderedDataStore unavailable, returning empty leaderboard")
+		return {}
+	end
 	local success, pages = pcall(function()
-		return orderedStore:GetSortedAsync(false, count)
+		return store:GetSortedAsync(false, count)
 	end)
 
 	if not success or not pages then

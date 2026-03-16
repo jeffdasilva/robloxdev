@@ -1,6 +1,6 @@
 {
-	"$className": "ScreenGui",
-	"$properties": {
+	"className": "ScreenGui",
+	"properties": {
 		"ResetOnSpawn": false,
 		"ZIndexBehavior": "Sibling",
 		"IgnoreGuiInset": true

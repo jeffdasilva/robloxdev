@@ -1,4 +1,4 @@
-.PHONY: help check test lint format build serve update clean setup
+.PHONY: help check test lint format build serve update clean setup stamp-version
 
 # Default target
 help: ## Show this help message
@@ -18,6 +18,11 @@ STYLUA  := StyLua
 SELENE  := selene
 ROJO    := rojo
 LUA     := lua
+
+# Version info (auto-generated at build time)
+VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo "0.1.0")
+BUILD_TIME := $(shell date -u '+%Y-%m-%d %H:%M UTC')
+CONFIG_FILE := src/shared/Config.lua
 
 # ─────────────────────────────────────────
 # Quality & Testing
@@ -46,15 +51,20 @@ format-check: ## Check formatting without modifying files
 # Rojo / Roblox
 # ─────────────────────────────────────────
 
-build: ## Build a .rbxlx place file from source
+build: stamp-version ## Build a .rbxlx place file from source
 	@echo "🔨 Building Roblox place file..."
 	@$(ROJO) build -o MathStreak.rbxlx
-	@echo "Built MathStreak.rbxlx"
+	@echo "Built MathStreak.rbxlx  ($(VERSION) @ $(BUILD_TIME))"
 
-serve: ## Start Rojo live-sync server (connect from Roblox Studio)
-	@echo "🚀 Starting Rojo server..."
+serve: stamp-version ## Start Rojo live-sync server (connect from Roblox Studio)
+	@echo "🚀 Starting Rojo server ($(VERSION) @ $(BUILD_TIME))..."
 	@echo "   Open Roblox Studio and connect with the Rojo plugin."
 	@$(ROJO) serve
+
+stamp-version: ## Stamp version and build time into Config.lua
+	@sed -i 's/Config.VERSION = "[^"]*"/Config.VERSION = "$(VERSION)"/' $(CONFIG_FILE)
+	@sed -i 's/Config.BUILD_TIME = "[^"]*"/Config.BUILD_TIME = "$(BUILD_TIME)"/' $(CONFIG_FILE)
+	@echo "📌 Version: $(VERSION) | Build: $(BUILD_TIME)"
 
 update: check build ## Run all checks, then build the Roblox place file
 	@echo ""

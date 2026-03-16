@@ -68,9 +68,25 @@ end
 ------------------------------------------------------------------------
 
 local function onPlayerAdded(player)
+	print("[MathStreak] Loading data for " .. player.Name .. " (" .. player.UserId .. ")")
+
+	-- Set default data immediately so remotes can respond while DataStore loads
+	playerCache[player.UserId] = {
+		currentStreak = 0,
+		bestStreak = 0,
+		lastCompletedDate = "",
+		attemptsUsed = 0,
+		todayQuestionId = "",
+		todaySolved = false,
+	}
+
+	-- Attempt to load saved data from DataStore (may fail in Studio)
 	local data = PlayerDataStore.load(player)
 	data = ensureTodayReset(data)
 	playerCache[player.UserId] = data
+
+	print("[MathStreak] Data ready for " .. player.Name)
+
 	PlayerDataStore.save(player, data)
 end
 
@@ -87,9 +103,19 @@ end
 ------------------------------------------------------------------------
 
 local function onGetDailyQuestion(player)
+	-- Wait for player data to load (handles race with PlayerAdded)
 	local data = playerCache[player.UserId]
 	if not data then
-		return nil
+		for _ = 1, 50 do -- wait up to 5 seconds
+			task.wait(0.1)
+			data = playerCache[player.UserId]
+			if data then
+				break
+			end
+		end
+		if not data then
+			return nil
+		end
 	end
 	data = ensureTodayReset(data)
 
@@ -229,8 +255,11 @@ end
 ------------------------------------------------------------------------
 
 function DailyMathService.init()
+	print("[MathStreak] Server v" .. Config.VERSION .. " (" .. Config.BUILD_TIME .. ") initializing...")
+
 	-- Set up remotes
 	Remotes.setup()
+	print("[MathStreak] Remotes created")
 
 	-- Bind remote handlers
 	local getDailyQuestion = Remotes.get("GetDailyQuestion")
@@ -267,7 +296,7 @@ function DailyMathService.init()
 		end
 	end)
 
-	print("[MathStreak] Server initialized!")
+	print("[MathStreak] Server initialized successfully!")
 end
 
 return DailyMathService
