@@ -82,12 +82,25 @@ local function onPlayerAdded(player)
 
 	-- Attempt to load saved data from DataStore (may fail in Studio)
 	local data = PlayerDataStore.load(player)
-	data = ensureTodayReset(data)
-	playerCache[player.UserId] = data
+	if data then
+		data = ensureTodayReset(data)
+		playerCache[player.UserId] = data
+		print("[BrainBlitz] Data loaded from DataStore for " .. player.Name)
+	else
+		print("[BrainBlitz] Using defaults for " .. player.Name .. " (DataStore unavailable or new player)")
+		data = playerCache[player.UserId]
+		data = ensureTodayReset(data)
+	end
 
-	print("[BrainBlitz] Data ready for " .. player.Name)
-
-	PlayerDataStore.save(player, data)
+	print(
+		"[BrainBlitz] Data ready for "
+			.. player.Name
+			.. " (streak: "
+			.. data.currentStreak
+			.. ", best: "
+			.. data.bestStreak
+			.. ")"
+	)
 end
 
 local function onPlayerRemoving(player)

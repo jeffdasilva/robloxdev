@@ -53,21 +53,19 @@ function PlayerDataStore.load(player)
 	local store = getDataStore()
 	if not store then
 		warn("[BrainBlitz] DataStore unavailable, returning defaults for " .. player.Name)
-		return {
-			currentStreak = 0,
-			bestStreak = 0,
-			lastCompletedDate = "",
-			attemptsUsed = 0,
-			todayQuestionId = "",
-			todaySolved = false,
-		}
+		return nil
 	end
 	local key = "player_" .. player.UserId
 	local success, data = pcall(function()
 		return store:GetAsync(key)
 	end)
 
-	if success and data then
+	if not success then
+		warn("[BrainBlitz] DataStore read failed for " .. player.Name .. ": " .. tostring(data))
+		return nil
+	end
+
+	if data then
 		-- merge with defaults in case of schema evolution
 		for k, v in pairs(DEFAULT_DATA) do
 			if data[k] == nil then
