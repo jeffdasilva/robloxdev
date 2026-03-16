@@ -1,0 +1,19 @@
+# Build artifacts
+*.rbxlx
+*.rbxl
+*.rbxm
+
+# Selene generated std
+roblox.yml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+*.swp
+*.swo
+*~
+
+# Aftman binaries (shims are in ~/.aftman/bin)

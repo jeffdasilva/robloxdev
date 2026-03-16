@@ -1,0 +1,33 @@
+{
+	"name": "MathStreak",
+	"tree": {
+		"$className": "DataModel",
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"MathStreak": {
+				"$path": "src/server"
+			}
+		},
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"MathStreak": {
+				"$path": "src/shared"
+			}
+		},
+		"StarterPlayer": {
+			"$className": "StarterPlayer",
+			"StarterPlayerScripts": {
+				"$className": "StarterPlayerScripts",
+				"MathStreak": {
+					"$path": "src/client"
+				}
+			}
+		},
+		"StarterGui": {
+			"$className": "StarterGui",
+			"MathStreakGui": {
+				"$path": "src/gui"
+			}
+		}
+	}
+}
